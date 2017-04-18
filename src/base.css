@@ -1,0 +1,51 @@
+.container {
+  font-family: map(fonts, family-sans);
+  font-size: 16px;
+  display: flex;
+  clear: fix;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  background-color: map(colors, red, caribe);
+  color: #fff;
+  font-family: map(fonts, family-sans);
+  padding: .4em 1em;
+  margin: 8em 2em 8em 0;
+  border-radius: .25em;
+  white-space: nowrap;
+  text-align: center;
+  position: relative;
+
+  &::after {
+    content: '';
+    width: 2em;
+    height: 0;
+    border-bottom: 2px dashed map(colors, secondary, base);
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(100%);
+  }
+}
+
+.items {
+  border: 2px dashed map(colors, secondary, base);
+  clear: fix;
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
+.boxes {
+  width: 100%;
+  height: 50%;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  border-top: 2px dashed map(colors, secondary, base);
+}

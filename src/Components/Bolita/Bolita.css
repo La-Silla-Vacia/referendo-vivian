@@ -1,0 +1,9 @@
+.container {
+  width: 3em;
+  height: 3em;
+  background-color: map(colors, red, caribe);
+  display: block;
+  border-radius: 50%;
+  float: left;
+  position: absolute;
+}
