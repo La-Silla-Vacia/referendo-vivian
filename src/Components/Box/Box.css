@@ -19,6 +19,9 @@
   text-align: center;
   position: absolute;
   bottom: 0;
-  font-size: 1.25em !important;
-  padding: 0.25em;
+  font-size: 1em !important;
+  padding: 0.25em !important;
+  font-weight: normal !important;
+  text-transform: capitalize;
+  box-sizing: border-box;
 }

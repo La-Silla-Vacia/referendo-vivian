@@ -1,9 +1,24 @@
 .container {
-  width: 3em;
-  height: 3em;
+  width: 2em;
+  height: 2em;
   background-color: map(colors, red, caribe);
   display: block;
   border-radius: 50%;
   float: left;
   position: absolute;
+  transition: 1s, background .4s;
+  text-align: center;
+  padding-top: 0.2em;
+  box-sizing: border-box;
+  cursor: poiner;
+}
+
+.firstLetter {
+  color: rgba(255, 255, 255, .2);
+  font-family: map(fonts, family-sans);
+  font-size: 1.4em;
+}
+
+.current {
+  background-color: map(colors, primary, base);
 }
