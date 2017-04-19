@@ -29,6 +29,12 @@ class Base extends Component {
     this.fetchData();
   }
 
+  componentDidMount() {
+    setInterval(() => {
+      // this.handleChange()
+    }, 1000);
+  }
+
   fetchData() {
     fetch(endpoint.dataUrl)
       .then((response) => {
@@ -40,16 +46,16 @@ class Base extends Component {
       json.map((item, index) => {
         let destination = item.paraDondeVa;
 
-        if (destination && destination !== '') {
-          items.push({
-            name: item.nombre,
-            region: item.region,
-            description: item.explicacion,
-            destination,
-            photo: item.linkFoto,
-            id: index
-          });
-        }
+        // if (destination && destination !== '') {
+        items.push({
+          name: item.nombre,
+          region: item.region,
+          description: item.explicacion,
+          destination,
+          photo: item.fotoLink,
+          id: index
+        });
+        // }
 
         if (destination && boxes.indexOf(destination) === -1) {
           boxes.push(destination);
@@ -62,8 +68,6 @@ class Base extends Component {
   }
 
   getBolitas() {
-    const rows = 5;
-    const BolitaSize = 36;
     const { run, description } = this.state;
     const items = this.state.data;
     const numberOfItems = items.length;
@@ -75,13 +79,6 @@ class Base extends Component {
 
     let x, y;
 
-    const itemsPerLine = Math.round(numberOfItems / rows);
-    const totalWidth = itemsPerLine * BolitaSize;
-    const startWidth = (width / 2) - (totalWidth * 0.5);
-    const startHeight = height - (BolitaSize / 1.2);
-    y = 0;
-    x = startWidth;
-
     const containers = [];
     items.map((item) => {
       const { destination } = item;
@@ -92,27 +89,46 @@ class Base extends Component {
           containers[destination] = [item];
       }
     });
+
+    let rows = 5;
+
+    const itemsPerGroupRow = 4;
     const numberOfGroups = Object.keys(containers).length;
     const pxPerGroup = width / numberOfGroups;
-    const itemsPerGroupRow = pxPerGroup / BolitaSize;
+    let BolitaSize = (pxPerGroup / 4) - 1;
+    if (width < 500) {
+      BolitaSize = (pxPerGroup / 2) - 1;
+      rows = 4;
+    } else if (width < 800) {
+      BolitaSize = (pxPerGroup / 3) - 1;
+      rows = 3;
+    }
+
+    const itemsPerLine = Math.round(numberOfItems / rows);
+    const totalWidth = itemsPerLine * BolitaSize;
+    const startWidth = (width / 2) - (totalWidth * 0.5);
+    const startHeight = height - 5;
+    y = -20;
+    x = startWidth;
+
     const groups = [];
     // if (!run) {
     return items.map((item, index) => {
+      const { destination } = item;
+      // if (!destination) return;
       if (run) {
-        const { destination } = item;
-        // console.log(destination);
-        // if (destination !== 'Senado') return;
+        // if the balls are in the boxes
         const group = Object.keys(containers).indexOf(destination);
         if (!groups[destination]) {
           groups[destination] = [1, 1];
-          x = 4 + pxPerGroup * group;
+          x = pxPerGroup * group;
         } else {
-          if (groups[destination][0] >= itemsPerGroupRow - 1) {
+          if (groups[destination][0] >= itemsPerGroupRow) {
             groups[destination][0] = 1;
             groups[destination][1]++;
-            x = 4;
+            x = 0;
           } else {
-            x = 4 + pxPerGroup * group + (BolitaSize * groups[destination][0]);
+            x = pxPerGroup * group + (BolitaSize * groups[destination][0]);
             groups[destination][0]++;
           }
         }
@@ -133,10 +149,11 @@ class Base extends Component {
         }
       }
 
-      item.current = description === item.id;
+      item.current = (description - 1) === item.id;
 
       item.y = y + 'px';
       item.x = x + 'px';
+      item.size = BolitaSize;
 
       return (
         <Bolita {...item} callback={this.showDescription} key={index} />
@@ -164,12 +181,12 @@ class Base extends Component {
   getDescription() {
     const { data, description, run } = this.state;
     if (description) {
-      const item = data[description];
+      const item = data[description - 1];
       return (
         <div className={cx(s.description, { [s.description__open]: run })}>
           <header>
             <h3 className={s.name}>{item.name}</h3>
-            <button className={s.closeButton} onClick={this.showDescription.bind(this, false)}>Salir</button>
+            <button className={s.closeButton} onClick={this.showDescription.bind(this, false)}>X</button>
           </header>
           <div dangerouslySetInnerHTML={{ __html: md.render(String(item.description)) }} />
         </div>
@@ -186,7 +203,7 @@ class Base extends Component {
       <div className={s.container}>
         <div className={s.wrap}>
           <aside className={s.sidebar}>
-            <button className={s.button} onClick={this.handleChange.bind(this, 'hoi')}>HOI</button>
+            <button className={s.button} onClick={this.handleChange.bind(this, 'hoi')}>HOY</button>
             <button className={s.button} onClick={this.handleChange.bind(this, 'hoi')}>EN 2018</button>
           </aside>
           <div className={s.items} ref={ c => this.items = c }>

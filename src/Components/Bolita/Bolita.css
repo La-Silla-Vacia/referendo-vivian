@@ -1,24 +1,37 @@
 .container {
   width: 2em;
   height: 2em;
-  background-color: map(colors, red, caribe);
   display: block;
-  border-radius: 50%;
   float: left;
   position: absolute;
-  transition: 1s, background .4s;
+  transition: 1s;
   text-align: center;
-  padding-top: 0.2em;
   box-sizing: border-box;
-  cursor: poiner;
+  cursor: pointer;
+  padding: 2px;
+  background: transparent;
+  border: 0;
 }
 
-.firstLetter {
-  color: rgba(255, 255, 255, .2);
-  font-family: map(fonts, family-sans);
-  font-size: 1.4em;
+.inside {
+  background-color: map(colors, red, caribe);
+  border-radius: 50%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  & .image {
+    width: 100%;
+    height: 100%;
+    transition: opacity .4s;
+    display: block;
+  }
 }
 
 .current {
-  background-color: map(colors, primary, base);
+  & .inside {
+    & .image {
+      opacity: .5;
+    }
+  }
 }

@@ -12,9 +12,11 @@
   .article-content.col-sm-12.col-md-8 {
     width: 85%;
   }
+}
 
-  .article-content {
-    width: 91.667%;
+@media (min-width: 992px) and (max-width: 1200px) {
+  .article-content.col-md-8 {
+    width: calc(100% - 20px) !important;
   }
 }
 

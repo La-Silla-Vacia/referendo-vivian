@@ -13,11 +13,27 @@
 .wrap {
   display: flex;
   clear: fix;
+
+  @media only screen and (max-width: 880px) {
+    display: block;
+    position: relative;
+    height: 26em;
+  }
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-width: 880px) {
+    position: absolute;
+    height: 50%;
+    justify-content: space-between;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 6em;
+  }
 }
 
 .button {
@@ -25,13 +41,14 @@
   color: #fff;
   font-family: map(fonts, family-sans);
   padding: .4em 1em;
-  margin: 10em 1em 10em 0;
+  margin: 11em 1em 11em 0;
   border-radius: .25em;
   white-space: nowrap;
   text-align: center;
   position: relative;
   font-size: .8em;
   border: 0;
+  z-index: 5;
 
   &::after {
     content: '';
@@ -43,6 +60,23 @@
     top: 50%;
     transform: translate(100%);
   }
+
+  @media only screen and (max-width: 880px) {
+    margin: 0;
+    transform: translateY(-50%);
+
+    &:last-child {
+      transform: translateY(50%);
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: 540px) {
+    padding: .2em .4em;
+  }
 }
 
 .items {
@@ -52,6 +86,10 @@
   display: block;
   width: 100%;
   position: relative;
+
+  @media only screen and (max-width: 880px) {
+    height: 100%
+  }
 }
 
 .cloud {
@@ -71,17 +109,25 @@
 .description {
   position: absolute;
   right: 2em;
-  bottom: 3.5em;
+  bottom: 2em;
   width: 100%;
   max-width: 25em;
   font-family: map(fonts, family-sans);
   font-size: .9em;
-  z-index: 2;
+  z-index: 6;
   background-color: map(colors, secondary, light);
   border-radius: 3px;
   padding: 1em;
   box-sizing: border-box;
   transition: 1s;
+  clear: fix;
+
+  @media only screen and (max-width: 480px) {
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: inherit;
+  }
 
   &__open {
     bottom: calc(100% - 2em);
@@ -95,7 +141,7 @@
   }
 
   p {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 }
 
@@ -104,7 +150,7 @@
   right: 1em;
   top: .75em;
   border-radius: 3px;
-  border: 0;
   padding: 0.15em 0.5em;
   font-size: .9em;
+  border: 1px solid #000;
 }

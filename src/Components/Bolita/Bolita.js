@@ -13,15 +13,21 @@ export default class Bolita extends Component {
 
   handleClick() {
     const {callback, id} = this.props;
-    callback(id);
+    callback(id + 1);
   }
 
   render(props, state) {
-    const {x, y, name, destination, current} = props;
+    const {x, y, name, destination, current, size, photo} = props;
     // console.log(destination);
     const style = {
       left: x,
-      top: y
+      top: y,
+      width: size,
+      height: size
+    };
+
+    const insideStyle = {
+      backgroundImage: `url(${photo}`
     };
 
     return (
@@ -33,7 +39,9 @@ export default class Bolita extends Component {
         onClick={this.handleClick}
         className={cx(s.container, {[s.current]: current})}
       >
-        <span className={s.firstLetter}>{name[0]}</span>
+        <div className={s.inside}>
+          <img className={s.image} src={photo} alt={name} />
+        </div>
       </button>
     )
   }
