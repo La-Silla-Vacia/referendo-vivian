@@ -115,7 +115,7 @@ class Base extends Component {
     // if (!run) {
     return items.map((item, index) => {
       const { destination } = item;
-      // if (!destination) return;
+      // if (destination !== 'Senado') return;
       if (run) {
         // if the balls are in the boxes
         const group = Object.keys(containers).indexOf(destination);
@@ -126,7 +126,7 @@ class Base extends Component {
           if (groups[destination][0] >= itemsPerGroupRow) {
             groups[destination][0] = 1;
             groups[destination][1]++;
-            x = 0;
+            x = pxPerGroup * group;
           } else {
             x = pxPerGroup * group + (BolitaSize * groups[destination][0]);
             groups[destination][0]++;
@@ -174,8 +174,8 @@ class Base extends Component {
     })
   }
 
-  handleChange() {
-    this.setState({ run: !this.state.run });
+  handleChange(state) {
+    this.setState({ run: state });
   }
 
   getDescription() {
@@ -194,7 +194,8 @@ class Base extends Component {
     }
   }
 
-  render() {
+  render(props, state) {
+    const {run} = state;
     const bolitas = this.getBolitas();
     const boxes = this.getBoxes();
     const description = this.getDescription();
@@ -203,8 +204,8 @@ class Base extends Component {
       <div className={s.container}>
         <div className={s.wrap}>
           <aside className={s.sidebar}>
-            <button className={s.button} onClick={this.handleChange.bind(this, 'hoi')}>HOY</button>
-            <button className={s.button} onClick={this.handleChange.bind(this, 'hoi')}>EN 2018</button>
+            <button className={cx(s.button, {[s.button__active]: !run})} onClick={this.handleChange.bind(this, false)}>HOY</button>
+            <button className={cx(s.button, {[s.button__active]: run})} onClick={this.handleChange.bind(this, true)}>EN 2018</button>
           </aside>
           <div className={s.items} ref={ c => this.items = c }>
             <div className={s.cloud}>

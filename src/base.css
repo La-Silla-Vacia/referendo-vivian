@@ -50,6 +50,20 @@
   border: 0;
   z-index: 5;
 
+  &:hover {
+    background-color: #f12d4d;
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: underline;
+  }
+
+  &__active,
+  &__active:hover {
+    background-color: #a22136;
+  }
+
   &::after {
     content: '';
     width: 1em;
