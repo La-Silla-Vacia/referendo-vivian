@@ -19,7 +19,8 @@ class Base extends Component {
       data: [],
       boxes: [],
       run: false,
-      description: false
+      description: false,
+      rerender: false,
     };
 
     this.showDescription = this.showDescription.bind(this);
@@ -30,9 +31,11 @@ class Base extends Component {
   }
 
   componentDidMount() {
-    setInterval(() => {
-      // this.handleChange()
-    }, 1000);
+    window.addEventListener('resize', this.handleResize.bind(this));
+  }
+
+  handleResize() {
+    this.setState({rerender: !this.state.rerender});
   }
 
   fetchData() {
@@ -68,7 +71,7 @@ class Base extends Component {
   }
 
   getBolitas() {
-    const { run, description } = this.state;
+    const { run, description, rerender } = this.state;
     const items = this.state.data;
     const numberOfItems = items.length;
     let width = 1000, height = 600;
@@ -92,15 +95,17 @@ class Base extends Component {
 
     let rows = 5;
 
-    const itemsPerGroupRow = 4;
+    let itemsPerGroupRow = 4;
     const numberOfGroups = Object.keys(containers).length;
     const pxPerGroup = width / numberOfGroups;
-    let BolitaSize = (pxPerGroup / 4) - 1;
+    let BolitaSize = (pxPerGroup / itemsPerGroupRow) - 1;
     if (width < 500) {
-      BolitaSize = (pxPerGroup / 2) - 1;
+      itemsPerGroupRow = 2;
+      BolitaSize = (pxPerGroup / itemsPerGroupRow) - 1;
       rows = 4;
     } else if (width < 800) {
-      BolitaSize = (pxPerGroup / 3) - 1;
+      itemsPerGroupRow = 3;
+      BolitaSize = (pxPerGroup / itemsPerGroupRow) - 1;
       rows = 3;
     }
 
@@ -175,7 +180,7 @@ class Base extends Component {
   }
 
   handleChange(state) {
-    this.setState({ run: state });
+    this.setState({ run: !this.state.run });
   }
 
   getDescription() {
@@ -195,7 +200,7 @@ class Base extends Component {
   }
 
   render(props, state) {
-    const {run} = state;
+    const { run } = state;
     const bolitas = this.getBolitas();
     const boxes = this.getBoxes();
     const description = this.getDescription();
@@ -204,8 +209,18 @@ class Base extends Component {
       <div className={s.container}>
         <div className={s.wrap}>
           <aside className={s.sidebar}>
-            <button className={cx(s.button, {[s.button__active]: !run})} onClick={this.handleChange.bind(this, false)}>HOY</button>
-            <button className={cx(s.button, {[s.button__active]: run})} onClick={this.handleChange.bind(this, true)}>EN 2018</button>
+            <button
+              className={cx(s.button, { [s.button__active]: !run })}
+              onClick={this.handleChange.bind(this, false)}
+            >
+              HOY
+            </button>
+            <button
+              className={cx(s.button, { [s.button__active]: run })}
+              onClick={this.handleChange.bind(this, true)}
+            >
+              EN 2018
+            </button>
           </aside>
           <div className={s.items} ref={ c => this.items = c }>
             <div className={s.cloud}>
